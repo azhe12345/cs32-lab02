@@ -7,10 +7,11 @@ StudentRoll::StudentRoll() {
 
 void StudentRoll::insertAtTail(const Student &s) {
   Node* newNode = new Node;
-  newNode->s = new Student(s);;
+  newNode->s = new Student(s);
   newNode->next = NULL;
     if (tail == NULL) { // If list is empty
       head = tail = newNode;
+      return;
     }
     else {
       tail->next = newNode;
@@ -22,16 +23,16 @@ std::string StudentRoll::toString() const {
   std::string result;
   Node* current = head;
   result += "[";
-  if (current == NULL){
-    result +="]";
-    return result;
-  }
-  result += current->s->toString();
-  while (current->next != NULL) {
-    result +="," +current->next->s->toString(); 
+  while (current != NULL) {
+    result += current->s->toString(); 
     current = current->next;
+    if(current !=NULL){
+      result+=",";
+    }
   }
+  
   result +="]";
+
   return result;
 }
 
@@ -49,6 +50,7 @@ StudentRoll::~StudentRoll() {
   Node* current = head;
   while (current != NULL){
     Node* next = current->next;
+    delete current->s;
     delete current;
     current = next;
   }
@@ -61,12 +63,24 @@ StudentRoll & StudentRoll::operator =(const StudentRoll &right ) {
 
   if (&right == this) 
     return (*this);
-  this->~StudentRoll();
+  Node* p = head;
+  while(p!=NULL){
+    Node* del =p;
+    p = p->next;
+    delete del->s;
+    delete del;
+  }
+  head = tail = NULL;
   Node* current = right.head;
-    while (current != NULL) {
+  while (current != NULL) {
     insertAtTail(*current->s);
     current = current->next;
   }
   return (*this); 
   
 }
+
+
+
+
+
