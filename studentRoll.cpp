@@ -70,8 +70,3 @@ StudentRoll & StudentRoll::operator =(const StudentRoll &right ) {
   return (*this); 
   
 }
-
-
-
-
-
